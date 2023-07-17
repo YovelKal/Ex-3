@@ -14,7 +14,13 @@ app = FastAPI(title=Consts.API_TITLE)
 
 @app.middleware("http")
 async def check_content_type(request, call_next):
-    if request.headers.get("Content-Type") != "application/json":
+    """
+    Check if the content type is application/json
+    :param request:
+    :param call_next:
+    :return:
+    """
+    if (request.headers.get("Content-Type") != "application/json") and request.method != "GET":
         return JSONResponse(content=0, status_code=415)
     response = await call_next(request)
     return response
@@ -59,11 +65,17 @@ def create_dish(dish_to_create: DishCreate):
 
 @app.delete("/dishes")
 def delete_all():
+    """
+    Delete all the dishes -- not allowed
+    """
     return Consts.NOT_ALLOWED_RES
 
 
 @app.delete("/dishes/{dish_identifier}")
 def delete_dish(dish_identifier):
+    """
+    Delete dish by Name or ID
+    """
     dish = DISH_COL.find(dish_identifier)
     if not dish:
         return Consts.NOT_FOUND_RES
@@ -73,6 +85,9 @@ def delete_dish(dish_identifier):
 
 @app.post("/meals")
 def create_meal(meal_to_create: MealCreate):
+    """
+    Create a new meal
+    """
     if not DISH_COL.find(str(meal_to_create.appetizer)) or not DISH_COL.find(
             str(meal_to_create.main)) or not DISH_COL.find(str(meal_to_create.dessert)):
         return Consts.DISH_NOT_EXIST_RES
@@ -85,6 +100,9 @@ def create_meal(meal_to_create: MealCreate):
 
 @app.get("/meals")
 def read_all_meals():
+    """
+    Get all the meals
+    """
     meals = MEAL_COL.get_all()
     meals_with_id = {}
     for meal_id, meal in meals.items():
@@ -94,6 +112,9 @@ def read_all_meals():
 
 @app.get("/meals/{meal_identifier}", response_model=MealWithID)
 def read_meal(meal_identifier):
+    """
+    Get meal by Name or ID
+    """
     meal = MEAL_COL.find(meal_identifier)
     if not meal:
         return Consts.NOT_FOUND_RES
@@ -102,6 +123,9 @@ def read_meal(meal_identifier):
 
 @app.delete("/meals/{meal_identifier}")
 def delete_meal(meal_identifier):
+    """
+    Delete meal by Name or ID
+    """
     meal = MEAL_COL.find(meal_identifier)
     if not meal:
         return Consts.NOT_FOUND_RES
@@ -110,6 +134,9 @@ def delete_meal(meal_identifier):
 
 @app.put("/meals/{meal_identifier}")
 def update_meal(meal_identifier, updated_meal: MealCreate):
+    """
+    Update meal by Name or ID
+    """
     meal = MEAL_COL.find(meal_identifier)
     if not meal:
         return Consts.NOT_FOUND_RES
