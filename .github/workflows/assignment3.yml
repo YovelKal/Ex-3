@@ -103,15 +103,17 @@ jobs:
       - name: create directory
         run: |
           mkdir -p mypath
-      - name: curl
+      - name: curls
         run: |
-          curl -X POST -H "Content-Type: application/json" -d '{"name": "orange"}' http://127.0.0.1:8000/dishes
-          res=$(curl -X GET http://127.0.0.1:8000/dishes/orange)
-          name=$(echo "$res" | grep -o '"name":"[^"]*' | cut -d':' -f2-)
-          calories=$(echo "$res" | grep -o '"cal":[^,]*' | cut -d':' -f2-)
-          sodium=$(echo "$res" | grep -o '"sodium":[^,]*' | cut -d':' -f2-)
-          sugar=$(echo "$res" | grep -o '"sugar":[^}]*' | cut -d':' -f2-)
-          echo "$name contains $calories calories, $sodium mgs of sodium, and $sugar grams of sugar" > mypath/response.txt
+          while IFS= read -r dish_name; do
+            curl -X POST -H "Content-Type: application/json" -d '{"name": ${dish_name}}' http://127.0.0.1:8000/dishes
+            res=$(curl -X GET http://127.0.0.1:8000/dishes/${dish_name}})
+            name=$(echo "$res" | grep -o '"name":"[^"]*' | cut -d':' -f2-)
+            calories=$(echo "$res" | grep -o '"cal":[^,]*' | cut -d':' -f2-)
+            sodium=$(echo "$res" | grep -o '"sodium":[^,]*' | cut -d':' -f2-)
+            sugar=$(echo "$res" | grep -o '"sugar":[^}]*' | cut -d':' -f2-)
+            echo "$name contains $calories calories, $sodium mgs of sodium, and $sugar grams of sugar" > mypath/response.txt
+          done < "query.txt"
       - name: upload query results
         if: always()  # always perform this step even if tests fail, to see results
         uses: actions/upload-artifact@v3
