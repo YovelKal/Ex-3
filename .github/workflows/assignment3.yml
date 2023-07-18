@@ -14,12 +14,12 @@ jobs:
       with:
         context: .
         file: ./Dockerfile
-        tags: meals_svr-v2:latest, ${{ secrets.DOCKER_COURSE_USERNAME }}/meals_svr-v2:latest
+        tags: mealssvr-v2:latest, ${{secrets.DOCKER_COURSE_USERNAME}}/mealssvr-v2:latest
         outputs: type=docker,dest=/tmp/image.tar
     - name: Upload artifact
       uses: actions/upload-artifact@v3
       with:
-        name: meals_svr
+        name: mealssvr
         path: /tmp/image.tar
 
   test:
@@ -30,11 +30,11 @@ jobs:
     - name: Download artifact
       uses: actions/download-artifact@v3  # downloads all artifacts
     - name: Load Docker images from previous workflows
-      run: docker load --input meals_svr/image.tar
-    - name: check meals_svr image is loaded
+      run: docker load --input mealssvr/image.tar
+    - name: check mealssvr image is loaded
       run: docker image ls
     - name: run image in container
-      run: docker run -p8000:8000 meals_svr-v2 &
+      run: docker run -p8000:8000 mealssvr-v2 &
     - name: Check container is running
       run: docker ps
 #     2. set up python and pytest environment
@@ -50,7 +50,7 @@ jobs:
     - name: Test with pytest  # additionally use ruff or other lint checkers
       run: |
         cd tests
-        pytest -v assn3_tests.py > test_results.txt
+        pytest -v assn3_tests.py > assn3_test_results.txt
     - name: upload test results
       if: always()  # always perform this step even if tests fail, to see results
       uses: actions/upload-artifact@v3
@@ -67,8 +67,8 @@ jobs:
         password: ${{ secrets.DOCKER_COURSE_PASSWORD }}
     - name: push image with "latest" and date tags to DH
       run: |
-        docker push ${{ secrets.DOCKER_COURSE_USERNAME }}/wordsvr-v2
-        docker tag ${{ secrets.DOCKER_COURSE_USERNAME }}/wordsvr-v2 \
-        ${{ secrets.DOCKER_COURSE_USERNAME }}/wordsvr-v2:${{ env.DATE }}
+        docker push ${{ secrets.DOCKER_COURSE_USERNAME }}/mealssvr-v2
+        docker tag ${{ secrets.DOCKER_COURSE_USERNAME }}/mealssvr-v2 \
+        ${{ secrets.DOCKER_COURSE_USERNAME }}/mealssvr-v2:${{ env.DATE }}
         docker push \
-        ${{ secrets.DOCKER_COURSE_USERNAME }}/wordsvr-v2:${{ env.DATE }}
+        ${{ secrets.DOCKER_COURSE_USERNAME }}/mealssvr-v2:${{ env.DATE }}
