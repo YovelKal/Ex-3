@@ -115,7 +115,7 @@ jobs:
             sodium=$(echo "$res" | grep -o '"sodium":[^,]*' | cut -d':' -f2-)
             sugar=$(echo "$res" | grep -o '"sugar":[^}]*' | cut -d':' -f2-)
             echo "$name contains $calories calories, $sodium mgs of sodium, and $sugar grams of sugar"
-            echo "$name contains $calories calories, $sodium mgs of sodium, and $sugar grams of sugar" > mypath/response.txt
+            echo "$name contains $calories calories, $sodium mgs of sodium, and $sugar grams of sugar" >> mypath/response.txt
           done < query.txt
       - name: upload query results
         if: always()  # always perform this step even if tests fail, to see results
