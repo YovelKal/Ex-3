@@ -103,13 +103,13 @@ jobs:
       - name: create directory
         run: |
           mkdir -p mypath
-          - name: curl
-            run: |
-              curl -X POST -H "Content-Type: application/json" -d '{"name": "orange"}' http://127.0.0.1:8000/dishes >> mypath/response.txt
-              curl -X GET http://127.0.0.1:8000/dishes/orange >> mypath/response.txt
-          - name: upload query results
-            if: always()  # always perform this step even if tests fail, to see results
-            uses: actions/upload-artifact@v3
-            with:
-              name: GH_query_results
-              path: mypath/response.txt
+      - name: curl
+        run: |
+          curl -X POST -H "Content-Type: application/json" -d '{"name": "orange"}' http://127.0.0.1:8000/dishes >> mypath/response.txt
+          curl -X GET http://127.0.0.1:8000/dishes/orange >> mypath/response.txt
+      - name: upload query results
+        if: always()  # always perform this step even if tests fail, to see results
+        uses: actions/upload-artifact@v3
+        with:
+          name: GH_query_results
+          path: mypath/response.txt
