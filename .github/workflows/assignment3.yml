@@ -105,10 +105,8 @@ jobs:
           mkdir -p mypath
       - name: curls
         run: |
-          test=$(curl -X POST -H "Content-Type: application/json" -d "{\"name\": \"hot dog\"}" http://127.0.0.1:8000/dishes)
-          echo "here is the test $test"
           while read dish_name; do
-            echo "the dish name is $dish_name"
+            echo "$dish_name"
             postres=$(curl -X POST -H "Content-Type: application/json" -d "{\"name\": \"$dish_name\"}" http://127.0.0.1:8000/dishes)
             echo "$postres"
             res=$(curl -X GET http://127.0.0.1:8000/dishes/"$dish_name")
