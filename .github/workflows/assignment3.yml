@@ -20,7 +20,7 @@ jobs:
       run: |
         echo "$(date '+%Y-%m-%d %H:%M:%S')" > log.txt
         echo "Yovel Kalmanson" >> log.txt
-        if [ ${{ steps.build.outputs.return_code }} -eq 0 ]; then
+        if [[ ${{ steps.build.outputs.return_code }} -eq 0 ]]; then
           echo "image successfully built" >> log.txt
         else
           echo "image not able to be built" >> log.txt
