@@ -18,7 +18,7 @@ jobs:
         outputs: type=docker,dest=/tmp/image.tar
     - name: Create log file
       run: |
-        echo "DATE=$(date -I)" > log.txt
+        echo "$(date '+%Y-%m-%d %H:%M:%S')" > log.txt
         echo "Yovel Kalmanson" >> log.txt
         if [ ${{ job.status }} == "success" ]; then
           echo "image successfully built" >> log.txt
@@ -107,10 +107,10 @@ jobs:
         run: |
           curl -X POST -H "Content-Type: application/json" -d '{"name": "orange"}' http://127.0.0.1:8000/dishes
           res=$(curl -X GET http://127.0.0.1:8000/dishes/orange)
-          name=$(echo "$data" | grep -o '"name":"[^"]*' | cut -d':' -f2-)
-          calories=$(echo "$data" | grep -o '"cal":[^,]*' | cut -d':' -f2-)
-          sodium=$(echo "$data" | grep -o '"sodium":[^,]*' | cut -d':' -f2-)
-          sugar=$(echo "$data" | grep -o '"sugar":[^}]*' | cut -d':' -f2-)
+          name=$(echo "$res" | grep -o '"name":"[^"]*' | cut -d':' -f2-)
+          calories=$(echo "$res" | grep -o '"cal":[^,]*' | cut -d':' -f2-)
+          sodium=$(echo "$res" | grep -o '"sodium":[^,]*' | cut -d':' -f2-)
+          sugar=$(echo "$res" | grep -o '"sugar":[^}]*' | cut -d':' -f2-)
           echo "$name contains $calories calories, $sodium mgs of sodium, and $sugar grams of sugar" > mypath/response.txt
       - name: upload query results
         if: always()  # always perform this step even if tests fail, to see results
