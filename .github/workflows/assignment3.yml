@@ -107,8 +107,8 @@ jobs:
         run: |
           ls
           while read dish_name; do
-            curl -X POST -H "Content-Type: application/json" -d '{"name": ${dish_name}}' http://127.0.0.1:8000/dishes
-            res=$(curl -X GET http://127.0.0.1:8000/dishes/${dish_name})
+            curl -X POST -H "Content-Type: application/json" -d '{"name": "$dish_name"}' http://127.0.0.1:8000/dishes
+            res=$(curl -X GET http://127.0.0.1:8000/dishes/"$dish_name")
             echo "$dish_name"
             echo "$res"
             name=$(echo "$res" | grep -o '"name":"[^"]*' | cut -d':' -f2-)
