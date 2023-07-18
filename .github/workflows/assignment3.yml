@@ -71,11 +71,11 @@ jobs:
       if: always()  # always perform this step even if tests fail, to see results
       uses: actions/upload-artifact@v3
       with:
-        name: GH_test_results
+        name: test_results
         path: tests/assn3_test_results.txt
 
   query:
-    needs: build
+    needs: test
     runs-on: ubuntu-latest
     steps:
       #    1. download image and run it in a container
@@ -105,11 +105,16 @@ jobs:
           mkdir -p mypath
       - name: curl
         run: |
-          curl -X POST -H "Content-Type: application/json" -d '{"name": "orange"}' http://127.0.0.1:8000/dishes >> mypath/response.txt
-          curl -X GET http://127.0.0.1:8000/dishes/orange >> mypath/response.txt
+          curl -X POST -H "Content-Type: application/json" -d '{"name": "orange"}' http://127.0.0.1:8000/dishes
+          re = $(curl -X GET http://127.0.0.1:8000/dishes/orange)
+          name=$(echo "$data" | grep -o '"name":"[^"]*' | cut -d':' -f2-)
+          calories=$(echo "$data" | grep -o '"cal":[^,]*' | cut -d':' -f2-)
+          sodium=$(echo "$data" | grep -o '"sodium":[^,]*' | cut -d':' -f2-)
+          sugar=$(echo "$data" | grep -o '"sugar":[^}]*' | cut -d':' -f2-)
+          echo "$name contains $calories calories, $sodium mgs of sodium, and $sugar grams of sugar" > mypath/response.txt
       - name: upload query results
         if: always()  # always perform this step even if tests fail, to see results
         uses: actions/upload-artifact@v3
         with:
-          name: GH_query_results
+          name: query_results
           path: mypath/response.txt
