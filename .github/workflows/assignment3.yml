@@ -52,7 +52,14 @@ jobs:
     - name: Test with pytest  # additionally use ruff or other lint checkers
       run: |
         pwd
-        python -m pytest -v tests/assn3_tests.py > assn3_test_results.txt
+        ls
+        cd mealssvr
+        pwd
+        ls
+        cd tests
+        pwd
+        ls
+        python -m pytest -v assn3_tests.py > assn3_test_results.txt
     - name: upload test results
       if: always()  # always perform this step even if tests fail, to see results
       uses: actions/upload-artifact@v3
