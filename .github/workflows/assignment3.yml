@@ -18,8 +18,13 @@ jobs:
         outputs: type=docker,dest=/tmp/image.tar
     - name: Create log file
       run: |
-        echo "$(date '+%Y-%m-%d %H:%M:%S')" > log.txt
-        echo "Your Name" >> log.txt
+        echo "DATE=$(date -I)" > log.txt
+        echo "Yovel Kalmanson" >> log.txt
+        if [ ${{ job.status }} == "success" ]; then
+          echo "Build succeeded" >> log.txt
+        else
+          echo "Build failed" >> log.txt
+        fi
     - name: upload log file
       uses: actions/upload-artifact@v3
       with:
