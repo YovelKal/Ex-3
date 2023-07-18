@@ -20,7 +20,19 @@ jobs:
       run: |
         echo "$(date '+%Y-%m-%d %H:%M:%S')" > log.txt
         echo "Your Name" >> log.txt
-
+    - name: Write if built success to log file
+      if: ${{ success() }}
+      run: |
+        echo "Built success" >> log.txt
+    - name: Write if built failed to log file
+      - if: ${{ failure() }}
+        - run: |
+          echo "Built failed" >> log.txt
+    - name: upload log file
+      uses: actions/upload-artifact@v3
+      with:
+        name: log
+        path: log.txt
     - name: Upload artifact
       uses: actions/upload-artifact@v3
       with:
