@@ -105,13 +105,11 @@ jobs:
           mkdir -p mypath
       - name: curls
         run: |
-          ls
           while read dish_name; do
-            postres=$(curl -X POST -H "Content-Type: application/json" -d '{"name": "$dish_name"}' http://127.0.0.1:8000/dishes)
+            postres=$(curl -X POST -H "Content-Type: application/json" -d "{\"name\": \"$dish_name\"}" http://127.0.0.1:8000/dishes)
+            echo "$postres"
             res=$(curl -X GET http://127.0.0.1:8000/dishes/"$dish_name")
-            echo "$dish_name\n"
-            echo "$postres\n"
-            echo "$res\n"
+            echo "$res"
             name=$(echo "$res" | grep -o '"name":"[^"]*' | cut -d':' -f2-)
             calories=$(echo "$res" | grep -o '"cal":[^,]*' | cut -d':' -f2-)
             sodium=$(echo "$res" | grep -o '"sodium":[^,]*' | cut -d':' -f2-)
