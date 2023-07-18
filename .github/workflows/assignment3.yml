@@ -51,8 +51,8 @@ jobs:
 #      3. run pytest tests and check results
     - name: Test with pytest  # additionally use ruff or other lint checkers
       run: |
-        cd tests
-        python -m pytest -v assn3_tests.py > assn3_test_results.txt
+        pwd
+        python -m pytest -v tests/assn3_tests.py > assn3_test_results.txt
     - name: upload test results
       if: always()  # always perform this step even if tests fail, to see results
       uses: actions/upload-artifact@v3
