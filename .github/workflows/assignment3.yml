@@ -18,7 +18,8 @@ jobs:
         outputs: type=docker,dest=/tmp/image.tar
     - name: Create log file
       run: |
-        echo "${{ job.status == 'success' ? 'image successfully built' : 'image not able to be built' }}" > log.txt
+        echo "$(date '+%Y-%m-%d %H:%M:%S')" > log.txt
+        echo "Your Name" >> log.txt
 
     - name: Upload artifact
       uses: actions/upload-artifact@v3
