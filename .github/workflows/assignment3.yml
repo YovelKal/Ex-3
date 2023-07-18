@@ -22,8 +22,9 @@ jobs:
         echo "Your Name" >> log.txt
     - name: Write if built success to log file
       if: ${{ success() }}
-      run: |
-        echo "Built success" >> log.txt
+        run: |
+            echo "Built success" >> log.txt
+
     - name: Write if built failed to log file
       - if: ${{ failure() }}
         - run: |
