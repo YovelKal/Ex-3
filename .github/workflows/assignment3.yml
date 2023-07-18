@@ -20,11 +20,6 @@ jobs:
       run: |
         echo "$(date '+%Y-%m-%d %H:%M:%S')" > log.txt
         echo "Your Name" >> log.txt
-    - name: Write if built success or not to log file
-        if: ${{ success() }}
-          run: echo "built success" >> log.txt
-          else:
-            run: echo "built failed" >> log.txt
     - name: upload log file
       uses: actions/upload-artifact@v3
       with:
