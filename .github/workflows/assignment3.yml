@@ -14,7 +14,7 @@ jobs:
       with:
         context: .
         file: ./Dockerfile
-        tags: mealssvr-v2:latest, ${{secrets.DOCKER_COURSE_USERNAME}}-mealssvr-v2:latest
+        tag: ${{secrets.DOCKER_COURSE_USERNAME}}-mealssvr-v2:latest
         outputs: type=docker,dest=/tmp/image.tar
     - name: Upload artifact
       uses: actions/upload-artifact@v3
