@@ -1,6 +1,6 @@
 FROM python:3.10
 
-gnfnWORKDIR /app
+WORKDIR /app
 
 COPY requirements.txt .
 
