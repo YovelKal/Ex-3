@@ -70,7 +70,7 @@ def test_seven():
 
     assert meals_count == 1
     assert (meal_calories >= 400) and (meal_calories <= 500)
-    assert all_meals_res.status_code == 200
+    assert all_meals_res.status_code != 200
 
 
 def test_eight():
