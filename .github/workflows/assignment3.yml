@@ -18,7 +18,7 @@ jobs:
         outputs: type=docker,dest=/tmp/image.tar
     - name: Create log file
       run: |
-        echo "$(date '+%Y-%m-%d %H:%M:%S')" > log.txt
+        echo "$(date –Iminutes)" > log.txt
         echo "Yovel Kalmanson" >> log.txt
         if [ ${{ job.status }} == "success" ]; then
           echo "image successfully built" >> log.txt
@@ -67,12 +67,25 @@ jobs:
       run: |
         cd tests
         pytest -v assn3_tests.py > assn3_test_results.txt
+        echo "PYTEST_CODE=$(echo $?)" >> $GITHUB_ENV
     - name: upload test results
       if: always()  # always perform this step even if tests fail, to see results
       uses: actions/upload-artifact@v3
       with:
         name: test_results
         path: tests/assn3_test_results.txt
+    - name: Update log file- tests
+      run: |
+        if [ ${{ env.PYTEST_CODE }} == 0 ]; then
+          echo "“tests succeeded" >> log.txt
+        else
+          echo "tests failed" >> log.txt
+        fi
+    - name: upload log file
+      uses: actions/upload-artifact@v3
+      with:
+        name: log
+        path: log.txt
 
   query:
     needs: test
