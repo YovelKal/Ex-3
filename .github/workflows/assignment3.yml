@@ -68,6 +68,7 @@ jobs:
         cd tests
         pytest -v assn3_tests.py > assn3_test_results.txt
         echo "PYTEST_CODE=$(echo $?)" >> $GITHUB_ENV
+        cd ..
     - name: upload test results
       if: always()  # always perform this step even if tests fail, to see results
       uses: actions/upload-artifact@v3
@@ -76,6 +77,8 @@ jobs:
         path: tests/assn3_test_results.txt
     - name: Update log file- tests
       run: |
+        ls
+        cat log.txt
         if [ ${{ env.PYTEST_CODE }} == 0 ]; then
           echo "“tests succeeded" >> log.txt
         else
