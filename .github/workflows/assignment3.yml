@@ -50,11 +50,11 @@ jobs:
     - name: check mealssvr image is loaded
       run: docker image ls
     - name: run image in container
-      run: docker run -p8000:8000 mealssvr-v2 &
-    - name: Check container is running
       run: |
+        docker run -p8000:8000 mealssvr-v2 &
         echo "CONTAINER_CODE=$(echo $?)" >> $GITHUB_ENV
-        docker ps
+    - name: Check container is running
+      run: docker ps
 #     2. set up python and pytest environment
     - name: Checkout
       uses: actions/checkout@v3
