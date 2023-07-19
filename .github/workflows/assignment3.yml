@@ -79,6 +79,7 @@ jobs:
         name: test_results
         path: tests/assn3_test_results.txt
     - name: Update log file- tests
+        if: always()  # always perform this step even if container run fail, to see results
       run: |
         echo $(date -Iminutes) > log.txt
         echo "Yovel Kalmanson" >> log.txt
@@ -94,6 +95,7 @@ jobs:
           echo "Container failed to run" >> log.txt
         fi
     - name: upload log file
+        if: always()  # always perform this step even if container run fail, to see results
       uses: actions/upload-artifact@v3
       with:
         name: log
@@ -132,7 +134,7 @@ jobs:
         run: |
           python query_handler.py >> mypath/response.txt
       - name: upload query results
-        if: always()  # always perform this step even if tests fail, to see results
+        if: always()  # always perform this step even if fails, to see results
         uses: actions/upload-artifact@v3
         with:
           name: query_results
