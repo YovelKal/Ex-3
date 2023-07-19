@@ -80,8 +80,11 @@ jobs:
         path: tests/assn3_test_results.txt
     - name: Update log file- tests
       run: |
+        echo $(date -Iminutes) > log.txt
+        echo "Yovel Kalmanson" >> log.txt
+        echo "image successfully built" >> log.txt
         if [ ${{ env.CONTAINER_CODE }} == 0 ]; then
-          echo "“Container up and running" >> log.txt
+          echo "Container up and running" >> log.txt
           if [ ${{ env.PYTEST_CODE }} == 0 ]; then
             echo "tests succeeded" >> log.txt
           else
