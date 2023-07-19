@@ -17,6 +17,7 @@ jobs:
         tags: mealssvr-v2:latest
         outputs: type=docker,dest=/tmp/image.tar
     - name: Create log file
+      if: always()  # always perform this step even if build fails
       run: |
         echo $(date -Iminutes) > log.txt
         echo "Yovel Kalmanson" >> log.txt
@@ -26,6 +27,7 @@ jobs:
           echo "image not able to be built" >> log.txt
         fi
     - name: upload log file
+      if: always()  # always perform this step even if build fails
       uses: actions/upload-artifact@v3
       with:
         name: log
