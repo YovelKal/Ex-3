@@ -84,6 +84,8 @@ jobs:
         echo $(date -Iminutes) > log.txt
         echo "Yovel Kalmanson" >> log.txt
         echo "image successfully built" >> log.txt
+        echo "container sum is ${{ env.CONTAINER_SUM }}"
+        echo "pytest code is ${{ env.PYTEST_CODE }}"
         if [ ${{ env.CONTAINER_SUM }} > 0 ]; then
           echo "Container up and running" >> log.txt
           if [ ${{ env.PYTEST_CODE }} == 0 ]; then
