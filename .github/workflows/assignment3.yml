@@ -84,18 +84,7 @@ jobs:
         echo $(date -Iminutes) > log.txt
         echo "Yovel Kalmanson" >> log.txt
         echo "image successfully built" >> log.txt
-        echo "container sum is ${{ env.CONTAINER_SUM }}"
-        echo "pytest code is ${{ env.PYTEST_CODE }}"
-        if [ ${{ env.CONTAINER_SUM }} > 0 ]; then
-          echo "Container up and running" >> log.txt
-          if [ ${{ env.PYTEST_CODE }} == 0 ]; then
-            echo "tests succeeded" >> log.txt
-          else
-            echo "tests failed" >> log.txt
-        fi
-        else
-          echo "Container failed to run" >> log.txt
-        fi
+        python log_handler.py ${{ env.CONTAINER_SUM }} ${{ env.PYTEST_CODE }} >> log.txt
     - name: upload log file
       if: always()  # always perform this step even if container run fail, to see results
       uses: actions/upload-artifact@v3
