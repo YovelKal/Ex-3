@@ -52,7 +52,9 @@ jobs:
     - name: run image in container
       run: docker run -p8000:8000 mealssvr-v2 &
     - name: Check container is running
-      run: docker ps
+      run: |
+        echo "CONTAINER_CODE=$(echo $?)" >> $GITHUB_ENV
+        docker ps
 #     2. set up python and pytest environment
     - name: Checkout
       uses: actions/checkout@v3
@@ -70,7 +72,6 @@ jobs:
         cd tests
         pytest -v assn3_tests.py > assn3_test_results.txt
         echo "PYTEST_CODE=$(echo $?)" >> $GITHUB_ENV
-        cd ..
     - name: upload test results
       if: always()  # always perform this step even if tests fail, to see results
       uses: actions/upload-artifact@v3
@@ -79,12 +80,15 @@ jobs:
         path: tests/assn3_test_results.txt
     - name: Update log file- tests
       run: |
-        ls
-        cat log.txt
-        if [ ${{ env.PYTEST_CODE }} == 0 ]; then
-          echo "tests succeeded" >> log.txt
+        if [ ${{ env.CONTAINER_CODE }} == 0 ]; then
+          echo "“Container up and running" >> log.txt
+          if [ ${{ env.PYTEST_CODE }} == 0 ]; then
+            echo "tests succeeded" >> log.txt
+          else
+            echo "tests failed" >> log.txt
+        fi
         else
-          echo "tests failed" >> log.txt
+          echo "Container failed to run" >> log.txt
         fi
     - name: upload log file
       uses: actions/upload-artifact@v3
