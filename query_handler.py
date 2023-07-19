@@ -30,7 +30,7 @@ def format_responses(responses):
         calories = json["cal"]
         sodium_mg = json["sodium"]
         sugar_grams = json["sugar"]
-        str_builder += f"{name} has {calories} calories, {sodium_mg} mg of sodium, and {sugar_grams} grams of sugar.\n"
+        str_builder += f"{name} contains {calories} calories, {sodium_mg} mgs of sodium, and {sugar_grams} grams of sugar\n"
     return str_builder
 
 
